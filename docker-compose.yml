@@ -1,0 +1,26 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    environment:
+      QDRANT__SERVICE__API_KEY: ${QDRANT_API_KEY}
+    volumes: [qdrant_data:/qdrant/storage]
+    networks: [internal]          # not published to host
+
+  core:
+    build: { context: ., dockerfile: deploy/Dockerfile.core }
+    env_file: .env
+    depends_on: [qdrant]
+    volumes: [core_data:/data]
+    networks: [internal]          # only nginx can reach it
+
+  gateway:
+    image: nginx:stable
+    depends_on: [core]
+    ports: ["8443:8443"]
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./network_security/certs:/certs:ro
+    networks: [internal]
+
+volumes: { qdrant_data: {}, core_data: {} }
+networks: { internal: {} }

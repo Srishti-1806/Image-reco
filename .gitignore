@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+network_security/certs/
+*.sqlite3
+.pytest_cache/

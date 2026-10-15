@@ -1,0 +1,6 @@
+# On Jetson install opencv + onnxruntime-gpu from NVIDIA/JetPack wheels, not PyPI.
+numpy>=1.26
+opencv-python-headless>=4.9
+insightface>=2.1
+onnxruntime>=1.17
+requests>=2.31
